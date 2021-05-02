@@ -1,4 +1,4 @@
-# The backend in Go
+# A backend in Go
 
 This is a backend in Go using Gin, Postgresql.
 
@@ -29,4 +29,5 @@ For more information of gin-swagger, please check github.com/swaggo/gin-swagger.
 On a browser, http://localhost:9000/swagger/index.html, you can test the APIs.
 
 ## License
+
 MIT
