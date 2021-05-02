@@ -1,0 +1,150 @@
+definitions:
+  serializer.Response:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      error:
+        type: string
+      msg:
+        type: string
+    type: object
+  serializer.User:
+    properties:
+      avatar:
+        type: string
+      createdAt:
+        type: integer
+      id:
+        type: integer
+      nickname:
+        type: string
+      status:
+        type: string
+      username:
+        type: string
+    type: object
+  service.UserLoginService:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  service.UserRegisterService:
+    properties:
+      nickname:
+        type: string
+      password:
+        type: string
+      password_confirm:
+        type: string
+      username:
+        type: string
+    required:
+    - nickname
+    - password
+    - password_confirm
+    - username
+    type: object
+info:
+  contact: {}
+paths:
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: user login
+      operationId: /user/login
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.UserLoginService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/serializer.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/serializer.User'
+              type: object
+      summary: user login
+      tags:
+      - user API
+  /user/logout:
+    delete:
+      consumes:
+      - application/json
+      description: user logout
+      operationId: /user/logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: user logout
+      tags:
+      - user API
+  /user/me:
+    get:
+      consumes:
+      - application/json
+      description: user info
+      operationId: /user/me
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/serializer.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/serializer.User'
+              type: object
+      summary: user info
+      tags:
+      - user API
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: user register
+      operationId: /user/register
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.UserRegisterService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/serializer.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/serializer.User'
+              type: object
+      summary: user register
+      tags:
+      - user API
+swagger: "2.0"
