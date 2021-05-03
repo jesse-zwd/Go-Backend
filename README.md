@@ -12,8 +12,10 @@ This is a backend in Go using Gin, Postgresql.
 
 ## Features
 
-1. Login/Register/Logout
-2. user/me - user information
+1. user/Login - login
+2. user/Register - register
+3. user/Logout - logout
+4. user/me - user information
 
 
 ## Run it locally
@@ -26,7 +28,7 @@ For more information of gin-swagger, please check github.com/swaggo/gin-swagger.
 ### swag init
 ### go run main.go
 
-On a browser, http://localhost:9000/swagger/index.html, you can test the APIs.
+On a browser, open http://localhost:9000/swagger/index.html, you can test the APIs.
 
 ## License
 

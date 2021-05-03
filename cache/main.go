@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"os"
 	"backend/util"
+	"os"
 	"strconv"
 
 	"github.com/go-redis/redis"
@@ -24,7 +24,7 @@ func Redis() {
 	_, err := client.Ping().Result()
 
 	if err != nil {
-		util.Log().Panic("连接Redis不成功", err)
+		util.Log().Panic("Redis connection failed", err)
 	}
 
 	RedisClient = client
