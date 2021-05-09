@@ -2,11 +2,13 @@ package model
 
 import (
 	"backend/util"
+	"log"
+	"os"
 	"time"
 
-	"github.com/jinzhu/gorm"
-
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 // DB database connection
@@ -14,19 +16,34 @@ var DB *gorm.DB
 
 // Database init postgres connection
 func Database(connString string) {
-	db, err := gorm.Open("postgres", connString)
-	db.LogMode(true)
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		logger.Config{
+			SlowThreshold:             time.Second,   // Slow SQL threshold
+			LogLevel:                  logger.Silent, // Log level
+			IgnoreRecordNotFoundError: true,          // Ignore ErrRecordNotFound error for logger
+			Colorful:                  false,         // Disable color
+		},
+	)
+
+	db, err := gorm.Open(postgres.Open(connString), &gorm.Config{
+		Logger: newLogger,
+	})
 	// Error
 	if err != nil {
 		util.Log().Panic("database connection failed", err)
 	}
 	//setting connection pool
+	sqlDB, err := db.DB()
+	if err != nil {
+		util.Log().Panic("sqlDB failed", err)
+	}
 	//idle
-	db.DB().SetMaxIdleConns(50)
+	sqlDB.SetMaxIdleConns(50)
 	//ope
-	db.DB().SetMaxOpenConns(100)
+	sqlDB.SetMaxOpenConns(100)
 	//timeout
-	db.DB().SetConnMaxLifetime(time.Second * 30)
+	sqlDB.SetConnMaxLifetime(time.Second * 30)
 
 	DB = db
 

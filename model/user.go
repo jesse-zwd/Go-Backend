@@ -1,13 +1,12 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // User model
 type User struct {
-	gorm.Model
+	GORM_MODEL
 	UserName       string
 	PasswordDigest string
 	Nickname       string
