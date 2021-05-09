@@ -30,7 +30,7 @@ func (service *UserLoginService) Login(c *gin.Context) serializer.Response {
 		return serializer.ParamErr("wrong username or password", nil)
 	}
 
-	if user.CheckPassword(service.Password) == false {
+	if !user.CheckPassword(service.Password) {
 		return serializer.ParamErr("wrong username or password", nil)
 	}
 
