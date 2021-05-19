@@ -3,7 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"backend/conf"
+	"backend/initialize"
 	"backend/model"
 	"backend/serializer"
 
@@ -25,8 +25,8 @@ func CurrentUser(c *gin.Context) *model.User {
 func ErrorResponse(err error) serializer.Response {
 	if ve, ok := err.(validator.ValidationErrors); ok {
 		for _, e := range ve {
-			field := conf.T(fmt.Sprintf("Field.%s", e.Field))
-			tag := conf.T(fmt.Sprintf("Tag.Valid.%s", e.Tag))
+			field := initialize.T(fmt.Sprintf("Field.%s", e.Field))
+			tag := initialize.T(fmt.Sprintf("Tag.Valid.%s", e.Tag))
 			return serializer.ParamErr(
 				fmt.Sprintf("%s%s", field, tag),
 				err,

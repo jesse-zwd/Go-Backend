@@ -1,6 +1,7 @@
 package service
 
 import (
+	"backend/global"
 	"backend/model"
 	"backend/serializer"
 
@@ -26,7 +27,7 @@ func (service *UserLoginService) setSession(c *gin.Context, user model.User) {
 func (service *UserLoginService) Login(c *gin.Context) serializer.Response {
 	var user model.User
 
-	if err := model.DB.Where("user_name = ?", service.UserName).First(&user).Error; err != nil {
+	if err := global.GORM_DB.Where("user_name = ?", service.UserName).First(&user).Error; err != nil {
 		return serializer.ParamErr("wrong username or password", nil)
 	}
 
@@ -58,7 +59,7 @@ func (service *UserRegisterService) valid() *serializer.Response {
 	}
 
 	var count int64
-	model.DB.Model(&model.User{}).Where("nickname = ?", service.Nickname).Count(&count)
+	global.GORM_DB.Model(&model.User{}).Where("nickname = ?", service.Nickname).Count(&count)
 	if count > 0 {
 		return &serializer.Response{
 			Code: 40001,
@@ -67,7 +68,7 @@ func (service *UserRegisterService) valid() *serializer.Response {
 	}
 
 	count = 0
-	model.DB.Model(&model.User{}).Where("user_name = ?", service.UserName).Count(&count)
+	global.GORM_DB.Model(&model.User{}).Where("user_name = ?", service.UserName).Count(&count)
 	if count > 0 {
 		return &serializer.Response{
 			Code: 40001,
@@ -101,7 +102,7 @@ func (service *UserRegisterService) Register() serializer.Response {
 	}
 
 	// Create user
-	if err := model.DB.Create(&user).Error; err != nil {
+	if err := global.GORM_DB.Create(&user).Error; err != nil {
 		return serializer.ParamErr("register failed", err)
 	}
 

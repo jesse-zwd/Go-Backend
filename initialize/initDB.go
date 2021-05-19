@@ -1,4 +1,4 @@
-package model
+package initialize
 
 import (
 	"backend/util"
@@ -9,10 +9,9 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-)
 
-// DB database connection
-var DB *gorm.DB
+	"backend/global"
+)
 
 // Database init postgres connection
 func Database(connString string) {
@@ -45,7 +44,7 @@ func Database(connString string) {
 	//timeout
 	sqlDB.SetConnMaxLifetime(time.Second * 30)
 
-	DB = db
+	global.GORM_DB = db
 
 	migration()
 }

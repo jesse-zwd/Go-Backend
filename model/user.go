@@ -2,11 +2,12 @@ package model
 
 import (
 	"golang.org/x/crypto/bcrypt"
+	"backend/global"
 )
 
 // User model
 type User struct {
-	GORM_MODEL
+	global.GORM_MODEL
 	UserName       string
 	PasswordDigest string
 	Nickname       string
@@ -31,7 +32,7 @@ const (
 // GetUser get user by id
 func GetUser(ID interface{}) (User, error) {
 	var user User
-	result := DB.First(&user, ID)
+	result := global.GORM_DB.First(&user, ID)
 	return user, result.Error
 }
 

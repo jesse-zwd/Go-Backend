@@ -1,4 +1,4 @@
-package conf
+package initialize
 
 import (
 	"io/ioutil"

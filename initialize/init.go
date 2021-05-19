@@ -1,15 +1,14 @@
-package conf
+package initialize
 
 import (
-	"os"
 	"backend/cache"
-	"backend/model"
 	"backend/util"
+	"os"
 
 	"github.com/joho/godotenv"
 )
 
-// Init 
+// Init
 func Init() {
 	// load .env
 	godotenv.Load()
@@ -18,11 +17,11 @@ func Init() {
 	util.BuildLogger(os.Getenv("LOG_LEVEL"))
 
 	// load translation file
-	if err := LoadLocales("conf/locales/zh-cn.yaml"); err != nil {
+	if err := LoadLocales("initialize/locales/zh-cn.yaml"); err != nil {
 		util.Log().Panic("translation file loading failed!", err)
 	}
 
 	// connect database
-	model.Database(os.Getenv("PSQL_DSN"))
+	Database(os.Getenv("PSQL_DSN"))
 	cache.Redis()
 }

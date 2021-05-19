@@ -63,3 +63,8 @@ func NewRouter() *gin.Engine {
 	}
 	return r
 }
+
+func StartServer() {
+	r := NewRouter()
+	r.Run(":9000")
+}

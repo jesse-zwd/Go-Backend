@@ -2,14 +2,12 @@ package cache
 
 import (
 	"backend/util"
+	"backend/global"
 	"os"
 	"strconv"
 
 	"github.com/go-redis/redis"
 )
-
-// RedisClient Redis Client
-var RedisClient *redis.Client
 
 // Redis init
 func Redis() {
@@ -27,5 +25,5 @@ func Redis() {
 		util.Log().Panic("Redis connection failed", err)
 	}
 
-	RedisClient = client
+	global.GO_REDIS = client
 }

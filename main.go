@@ -1,15 +1,14 @@
 package main
 
 import (
-	"backend/conf"
+	"backend/initialize"
 	"backend/server"
 )
 
 func main() {
 	// load config
-	conf.Init()
+	initialize.Init()
 
 	// load router
-	r := server.NewRouter()
-	r.Run(":9000")
+	server.StartServer()
 }
