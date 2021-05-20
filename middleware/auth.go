@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"backend/model"
-	"backend/serializer"
+	"backend/service"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -33,7 +33,7 @@ func AuthRequired() gin.HandlerFunc {
 			}
 		}
 
-		c.JSON(200, serializer.CheckLogin())
+		c.JSON(200, service.CheckLogin())
 		c.Abort()
 	}
 }

@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"encoding/json"
-	"fmt"
 	"backend/initialize"
 	"backend/model"
-	"backend/serializer"
+	"backend/service"
+	"encoding/json"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	validator "gopkg.in/go-playground/validator.v8"
@@ -22,20 +22,20 @@ func CurrentUser(c *gin.Context) *model.User {
 }
 
 // ErrorResponse get error
-func ErrorResponse(err error) serializer.Response {
+func ErrorResponse(err error) service.Response {
 	if ve, ok := err.(validator.ValidationErrors); ok {
 		for _, e := range ve {
 			field := initialize.T(fmt.Sprintf("Field.%s", e.Field))
 			tag := initialize.T(fmt.Sprintf("Tag.Valid.%s", e.Tag))
-			return serializer.ParamErr(
+			return service.ParamErr(
 				fmt.Sprintf("%s%s", field, tag),
 				err,
 			)
 		}
 	}
 	if _, ok := err.(*json.UnmarshalTypeError); ok {
-		return serializer.ParamErr("JSON types don't match", err)
+		return service.ParamErr("JSON types don't match", err)
 	}
 
-	return serializer.ParamErr("param error", err)
+	return service.ParamErr("param error", err)
 }

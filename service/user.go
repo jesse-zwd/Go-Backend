@@ -3,17 +3,10 @@ package service
 import (
 	"backend/global"
 	"backend/model"
-	"backend/serializer"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
-
-// UserLoginService login service
-type UserLoginService struct {
-	UserName string `form:"username" json:"username" binding:"required,min=5,max=30"`
-	Password string `form:"password" json:"password" binding:"required,min=8,max=40"`
-}
 
 // setSession set session
 func (service *UserLoginService) setSession(c *gin.Context, user model.User) {
@@ -23,36 +16,28 @@ func (service *UserLoginService) setSession(c *gin.Context, user model.User) {
 	s.Save()
 }
 
-// Login 
-func (service *UserLoginService) Login(c *gin.Context) serializer.Response {
+// Login
+func (service *UserLoginService) Login(c *gin.Context) Response {
 	var user model.User
 
 	if err := global.GORM_DB.Where("user_name = ?", service.UserName).First(&user).Error; err != nil {
-		return serializer.ParamErr("wrong username or password", nil)
+		return ParamErr("wrong username or password", nil)
 	}
 
 	if !user.CheckPassword(service.Password) {
-		return serializer.ParamErr("wrong username or password", nil)
+		return ParamErr("wrong username or password", nil)
 	}
 
 	// set session
 	service.setSession(c, user)
 
-	return serializer.BuildUserResponse(user)
-}
-
-// UserRegisterService register service
-type UserRegisterService struct {
-	Nickname        string `form:"nickname" json:"nickname" binding:"required,min=2,max=30"`
-	UserName        string `form:"username" json:"username" binding:"required,min=5,max=30"`
-	Password        string `form:"password" json:"password" binding:"required,min=8,max=40"`
-	PasswordConfirm string `form:"password_confirm" json:"password_confirm" binding:"required,min=8,max=40"`
+	return BuildUserResponse(user)
 }
 
 // valid form
-func (service *UserRegisterService) valid() *serializer.Response {
+func (service *UserRegisterService) valid() *Response {
 	if service.PasswordConfirm != service.Password {
-		return &serializer.Response{
+		return &Response{
 			Code: 40001,
 			Msg:  "passwords don't match",
 		}
@@ -61,7 +46,7 @@ func (service *UserRegisterService) valid() *serializer.Response {
 	var count int64
 	global.GORM_DB.Model(&model.User{}).Where("nickname = ?", service.Nickname).Count(&count)
 	if count > 0 {
-		return &serializer.Response{
+		return &Response{
 			Code: 40001,
 			Msg:  "nickname not available",
 		}
@@ -70,7 +55,7 @@ func (service *UserRegisterService) valid() *serializer.Response {
 	count = 0
 	global.GORM_DB.Model(&model.User{}).Where("user_name = ?", service.UserName).Count(&count)
 	if count > 0 {
-		return &serializer.Response{
+		return &Response{
 			Code: 40001,
 			Msg:  "username not available",
 		}
@@ -79,8 +64,8 @@ func (service *UserRegisterService) valid() *serializer.Response {
 	return nil
 }
 
-// Register 
-func (service *UserRegisterService) Register() serializer.Response {
+// Register
+func (service *UserRegisterService) Register() Response {
 	user := model.User{
 		Nickname: service.Nickname,
 		UserName: service.UserName,
@@ -94,8 +79,8 @@ func (service *UserRegisterService) Register() serializer.Response {
 
 	// encrypt
 	if err := user.SetPassword(service.Password); err != nil {
-		return serializer.Err(
-			serializer.CodeEncryptError,
+		return Err(
+			CodeEncryptError,
 			"encryption failed",
 			err,
 		)
@@ -103,9 +88,8 @@ func (service *UserRegisterService) Register() serializer.Response {
 
 	// Create user
 	if err := global.GORM_DB.Create(&user).Error; err != nil {
-		return serializer.ParamErr("register failed", err)
+		return ParamErr("register failed", err)
 	}
 
-	return serializer.BuildUserResponse(user)
+	return BuildUserResponse(user)
 }
-

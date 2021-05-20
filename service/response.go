@@ -1,6 +1,10 @@
-package serializer
+package service
 
-import "github.com/gin-gonic/gin"
+import (
+	"backend/model"
+
+	"github.com/gin-gonic/gin"
+)
 
 // Response basic serializer
 type Response struct {
@@ -10,7 +14,7 @@ type Response struct {
 	Error string      `json:"error,omitempty"`
 }
 
-// TrackedErrorResponse 
+// TrackedErrorResponse
 type TrackedErrorResponse struct {
 	Response
 	TrackID string `json:"track_id"`
@@ -18,9 +22,9 @@ type TrackedErrorResponse struct {
 
 // Error code
 const (
-	// CodeCheckLogin 
+	// CodeCheckLogin
 	CodeCheckLogin = 401
-	// CodeNoRightErr 
+	// CodeNoRightErr
 	CodeNoRightErr = 403
 	// CodeDBError database error
 	CodeDBError = 50001
@@ -30,7 +34,7 @@ const (
 	CodeParamErr = 40001
 )
 
-// CheckLogin 
+// CheckLogin
 func CheckLogin() Response {
 	return Response{
 		Code: CodeCheckLogin,
@@ -38,13 +42,13 @@ func CheckLogin() Response {
 	}
 }
 
-// Err handling common error 
+// Err handling common error
 func Err(errCode int, msg string, err error) Response {
 	res := Response{
 		Code: errCode,
 		Msg:  msg,
 	}
-	
+
 	if err != nil && gin.Mode() != gin.ReleaseMode {
 		res.Error = err.Error()
 	}
@@ -65,4 +69,32 @@ func ParamErr(msg string, err error) Response {
 		msg = "param error"
 	}
 	return Err(CodeParamErr, msg, err)
+}
+
+type User struct {
+	ID        uint   `json:"id"`
+	UserName  string `json:"username"`
+	Nickname  string `json:"nickname"`
+	Status    string `json:"status"`
+	Avatar    string `json:"avatar"`
+	CreatedAt int64  `json:"created_at"`
+}
+
+// BuildUser serialize User
+func BuildUser(user model.User) User {
+	return User{
+		ID:        user.ID,
+		UserName:  user.UserName,
+		Nickname:  user.Nickname,
+		Status:    user.Status,
+		Avatar:    user.Avatar,
+		CreatedAt: user.CreatedAt.Unix(),
+	}
+}
+
+// BuildUserResponse Response of User serializer
+func BuildUserResponse(user model.User) Response {
+	return Response{
+		Data: BuildUser(user),
+	}
 }

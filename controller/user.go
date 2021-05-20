@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"backend/serializer"
 	"backend/service"
 
 	"github.com/gin-contrib/sessions"
@@ -42,7 +41,7 @@ func UserLogin(c *gin.Context) {
 	var service service.UserLoginService
 	if err := c.ShouldBind(&service); err == nil {
 		res := service.Login(c)
-		c.JSON(200, res) 
+		c.JSON(200, res)
 	} else {
 		c.JSON(200, ErrorResponse(err))
 	}
@@ -59,7 +58,7 @@ func UserLogin(c *gin.Context) {
 // @Router /user/me [get]
 func UserMe(c *gin.Context) {
 	user := CurrentUser(c)
-	res := serializer.BuildUserResponse(*user)
+	res := service.BuildUserResponse(*user)
 	c.JSON(200, res)
 }
 
@@ -76,7 +75,7 @@ func UserLogout(c *gin.Context) {
 	s := sessions.Default(c)
 	s.Clear()
 	s.Save()
-	c.JSON(200, serializer.Response{
+	c.JSON(200, service.Response{
 		Code: 0,
 		Msg:  "Logged out",
 	})
