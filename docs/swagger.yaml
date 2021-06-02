@@ -1,5 +1,5 @@
 definitions:
-  serializer.Response:
+  service.Response:
     properties:
       code:
         type: integer
@@ -10,11 +10,11 @@ definitions:
       msg:
         type: string
     type: object
-  serializer.User:
+  service.User:
     properties:
       avatar:
         type: string
-      createdAt:
+      created_at:
         type: integer
       id:
         type: integer
@@ -74,10 +74,10 @@ paths:
           description: success
           schema:
             allOf:
-            - $ref: '#/definitions/serializer.Response'
+            - $ref: '#/definitions/service.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/serializer.User'
+                  $ref: '#/definitions/service.User'
               type: object
       summary: user login
       tags:
@@ -94,7 +94,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/serializer.Response'
+            $ref: '#/definitions/service.Response'
       summary: user logout
       tags:
       - user API
@@ -111,10 +111,10 @@ paths:
           description: success
           schema:
             allOf:
-            - $ref: '#/definitions/serializer.Response'
+            - $ref: '#/definitions/service.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/serializer.User'
+                  $ref: '#/definitions/service.User'
               type: object
       summary: user info
       tags:
@@ -139,10 +139,10 @@ paths:
           description: success
           schema:
             allOf:
-            - $ref: '#/definitions/serializer.Response'
+            - $ref: '#/definitions/service.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/serializer.User'
+                  $ref: '#/definitions/service.User'
               type: object
       summary: user register
       tags:

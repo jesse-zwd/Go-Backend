@@ -35,13 +35,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/serializer.Response"
+                                    "$ref": "#/definitions/service.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/serializer.User"
+                                            "$ref": "#/definitions/service.User"
                                         }
                                     }
                                 }
@@ -69,7 +69,7 @@
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/serializer.Response"
+                            "$ref": "#/definitions/service.Response"
                         }
                     }
                 }
@@ -95,13 +95,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/serializer.Response"
+                                    "$ref": "#/definitions/service.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/serializer.User"
+                                            "$ref": "#/definitions/service.User"
                                         }
                                     }
                                 }
@@ -142,13 +142,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/serializer.Response"
+                                    "$ref": "#/definitions/service.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/serializer.User"
+                                            "$ref": "#/definitions/service.User"
                                         }
                                     }
                                 }
@@ -160,7 +160,7 @@
         }
     },
     "definitions": {
-        "serializer.Response": {
+        "service.Response": {
             "type": "object",
             "properties": {
                 "code": {
@@ -177,13 +177,13 @@
                 }
             }
         },
-        "serializer.User": {
+        "service.User": {
             "type": "object",
             "properties": {
                 "avatar": {
                     "type": "string"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "integer"
                 },
                 "id": {

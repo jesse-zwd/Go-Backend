@@ -1,8 +1,6 @@
 package service
 
 import (
-	"backend/model"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -80,21 +78,4 @@ type User struct {
 	CreatedAt int64  `json:"created_at"`
 }
 
-// BuildUser serialize User
-func BuildUser(user model.User) User {
-	return User{
-		ID:        user.ID,
-		UserName:  user.UserName,
-		Nickname:  user.Nickname,
-		Status:    user.Status,
-		Avatar:    user.Avatar,
-		CreatedAt: user.CreatedAt.Unix(),
-	}
-}
 
-// BuildUserResponse Response of User serializer
-func BuildUserResponse(user model.User) Response {
-	return Response{
-		Data: BuildUser(user),
-	}
-}

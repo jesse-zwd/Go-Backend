@@ -55,13 +55,13 @@ var doc = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/serializer.Response"
+                                    "$ref": "#/definitions/service.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/serializer.User"
+                                            "$ref": "#/definitions/service.User"
                                         }
                                     }
                                 }
@@ -89,7 +89,7 @@ var doc = `{
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/serializer.Response"
+                            "$ref": "#/definitions/service.Response"
                         }
                     }
                 }
@@ -115,13 +115,13 @@ var doc = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/serializer.Response"
+                                    "$ref": "#/definitions/service.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/serializer.User"
+                                            "$ref": "#/definitions/service.User"
                                         }
                                     }
                                 }
@@ -162,13 +162,13 @@ var doc = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/serializer.Response"
+                                    "$ref": "#/definitions/service.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/serializer.User"
+                                            "$ref": "#/definitions/service.User"
                                         }
                                     }
                                 }
@@ -180,7 +180,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "serializer.Response": {
+        "service.Response": {
             "type": "object",
             "properties": {
                 "code": {
@@ -197,13 +197,13 @@ var doc = `{
                 }
             }
         },
-        "serializer.User": {
+        "service.User": {
             "type": "object",
             "properties": {
                 "avatar": {
                     "type": "string"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "integer"
                 },
                 "id": {

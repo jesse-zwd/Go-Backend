@@ -93,3 +93,32 @@ func (service *UserRegisterService) Register() Response {
 
 	return BuildUserResponse(user)
 }
+
+// BuildUser 
+func BuildUser(user model.User) User {
+	return User{
+		ID:        user.ID,
+		UserName:  user.UserName,
+		Nickname:  user.Nickname,
+		Status:    user.Status,
+		Avatar:    user.Avatar,
+		CreatedAt: user.CreatedAt.Unix(),
+	}
+}
+
+// BuildUserResponse Response of User
+func BuildUserResponse(user model.User) Response {
+	return Response{
+		Data: BuildUser(user),
+	}
+}
+
+// CurrentUser get current user
+func CurrentUser(c *gin.Context) *model.User {
+	if user, _ := c.Get("user"); user != nil {
+		if u, ok := user.(*model.User); ok {
+			return u
+		}
+	}
+	return nil
+}
