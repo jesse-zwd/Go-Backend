@@ -15,7 +15,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param body body service.UserRegisterService true "body"
-// @Success 200 {object} serializer.Response{data=serializer.User} "success"
+// @Success 200 {object} service.Response{data=service.User} "success"
 // @Router /user/register [post]
 func UserRegister(c *gin.Context) {
 	var service service.UserRegisterService
@@ -35,7 +35,7 @@ func UserRegister(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param body body service.UserLoginService true "body"
-// @Success 200 {object} serializer.Response{data=serializer.User} "success"
+// @Success 200 {object} service.Response{data=service.User} "success"
 // @Router /user/login [post]
 func UserLogin(c *gin.Context) {
 	var service service.UserLoginService
@@ -54,10 +54,10 @@ func UserLogin(c *gin.Context) {
 // @ID /user/me
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} serializer.Response{data=serializer.User} "success"
+// @Success 200 {object} service.Response{data=service.User} "success"
 // @Router /user/me [get]
 func UserMe(c *gin.Context) {
-	user := CurrentUser(c)
+	user := service.CurrentUser(c)
 	res := service.BuildUserResponse(*user)
 	c.JSON(200, res)
 }
@@ -69,7 +69,7 @@ func UserMe(c *gin.Context) {
 // @ID /user/logout
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} serializer.Response{} "success"
+// @Success 200 {object} service.Response{} "success"
 // @Router /user/logout [delete]
 func UserLogout(c *gin.Context) {
 	s := sessions.Default(c)
