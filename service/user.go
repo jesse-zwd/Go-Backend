@@ -21,8 +21,8 @@ const (
 )
 
 // GetUser get user by id
-func GetUser(ID interface{}) (User, error) {
-	var user User
+func GetUser(ID interface{}) (model.User, error) {
+	var user model.User
 	result := global.GORM_DB.First(&user, ID)
 	return user, result.Error
 }
