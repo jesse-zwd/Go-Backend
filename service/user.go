@@ -6,7 +6,42 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
+
+const (
+	// PassWordCost
+	PassWordCost = 12
+	// Active user
+	Active string = "active"
+	// Inactive user
+	Inactive string = "inactive"
+	// Suspended user
+	Suspend string = "suspend"
+)
+
+// GetUser get user by id
+func GetUser(ID interface{}) (User, error) {
+	var user User
+	result := global.GORM_DB.First(&user, ID)
+	return user, result.Error
+}
+
+// SetPassword set password
+func SetPassword(user *model.User, password string) error {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), PassWordCost)
+	if err != nil {
+		return err
+	}
+	user.Password = string(bytes)
+	return nil
+}
+
+// CheckPassword check password
+func CheckPassword(user *model.User, password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	return err == nil
+}
 
 // setSession set session
 func (service *UserLoginService) setSession(c *gin.Context, user model.User) {
@@ -24,7 +59,7 @@ func (service *UserLoginService) Login(c *gin.Context) Response {
 		return ParamErr("wrong username or password", nil)
 	}
 
-	if !user.CheckPassword(service.Password) {
+	if !CheckPassword(&user, service.Password) {
 		return ParamErr("wrong username or password", nil)
 	}
 
@@ -69,7 +104,7 @@ func (service *UserRegisterService) Register() Response {
 	user := model.User{
 		Nickname: service.Nickname,
 		UserName: service.UserName,
-		Status:   model.Active,
+		Status:   Active,
 	}
 
 	// validate
@@ -78,7 +113,7 @@ func (service *UserRegisterService) Register() Response {
 	}
 
 	// encrypt
-	if err := user.SetPassword(service.Password); err != nil {
+	if err := SetPassword(&user, service.Password); err != nil {
 		return Err(
 			CodeEncryptError,
 			"encryption failed",
@@ -94,7 +129,7 @@ func (service *UserRegisterService) Register() Response {
 	return BuildUserResponse(user)
 }
 
-// BuildUser 
+// BuildUser
 func BuildUser(user model.User) User {
 	return User{
 		ID:        user.ID,
